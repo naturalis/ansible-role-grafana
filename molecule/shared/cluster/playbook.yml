@@ -1,0 +1,21 @@
+---
+- name: Gather facts
+  hosts: all
+  tasks: []
+
+- name: Influxdb
+  hosts: influxdb
+  become: true
+  roles:
+    - zerodowntime.influxdb
+
+- name: Grafana
+  hosts: grafana
+  become: true
+  roles:
+    - role: zerodowntime.grafana
+
+- name: Print IP
+  hosts: all
+  tasks:
+    - debug: var=this__private_ip

@@ -1,0 +1,19 @@
+---
+this__private_ip: "{{ (ansible_all_ipv4_addresses | difference(['10.0.2.15'])) }}"
+grafana__no_log: false
+
+grafana__datasources:
+  - name: "influxdb"
+    datasource_url: "http://localhost:8086"
+    ds_type: "influxdb"
+    database: "test"
+    database_user: "test_user"
+    database_password: "test_db_password"
+    basicAuthUser: "test_user"
+    basicAuthPassword: "test__user_password"
+
+grafana__dashboards:
+  - title: "default_dashboard"
+    file_name: default_dashboard
+    file_dir: templates/examples
+    uid: "J6D8s6Kiz"

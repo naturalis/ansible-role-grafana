@@ -1,0 +1,53 @@
+---
+- name: Centos
+  block:
+    - name: Centos | Add Grafana repo
+      yum_repository:
+        name: grafana
+        description: Grafana Repository
+        baseurl: https://packagecloud.io/grafana/stable/el/\$releasever/\$basearch
+        gpgkey: https://packagecloud.io/gpg.key https://grafanarel.s3.amazonaws.com/RPM-GPG-KEY-grafana
+        gpgcheck: true
+
+    - name: Centos | Install Grafana
+      vars:
+        this_delimiter: "-"
+        this_name: "{{ ('grafana' + this_delimiter + grafana__version) if grafana__version != 'latest' else 'grafana' }}"
+        this_state: "{{ 'latest' if grafana__version == 'latest' else 'present' }}"
+      yum:
+        name: "{{ this_name }}"
+        state: "{{ this_state }}"
+      become: true
+  when: ansible_distribution | lower == "centos"
+
+
+- name: Ubuntu
+  block:
+    - name: Ubuntu | Install apt-transport-https
+      apt:
+        name: apt-transport-https
+        state: present
+      become: true
+
+    - name: Ubuntu | Add Grafana apt-key
+      apt_key:
+        url: https://packages.grafana.com/gpg.key
+        state: present
+
+    - name: Ubuntu | Add Grafana repo
+      apt_repository:
+        filename: Grafana
+        repo: deb https://packages.grafana.com/oss/deb stable main
+        state: present
+        update_cache: true
+
+    - name: Ubuntu | Install Grafana
+      vars:
+        this_delimiter: "="
+        this_name: "{{ ('grafana' + this_delimiter + grafana__version) if grafana__version != 'latest' else 'grafana' }}"
+        this_state: "{{ 'latest' if grafana__version == 'latest' else 'present' }}"
+      apt:
+        name: "{{ this_name }}"
+        state: "{{ this_state }}"
+      become: true
+  when: ansible_distribution | lower == "ubuntu"

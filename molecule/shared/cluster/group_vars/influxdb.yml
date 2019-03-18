@@ -1,0 +1,42 @@
+---
+influxdb__version: "1.7.4*"
+influxdb__hostname: "{{ ansible_host }}"
+influxdb__port: 8086
+
+influxdb__databases:
+  - "icinga"
+
+influxdb__admin:
+  user_name: root
+  user_password: "root"
+
+influxdb__users:
+  - name: "icinga_user"
+    password: "icinga__user_password"
+
+influxdb__user_permissons:
+  - user: "icinga_user"
+    db: "icinga"
+    grant: ALL
+
+influxdb__retention_autocreate: "true"
+influxdb__retention:
+  enabled: "false"
+  check_interval: "24h0m0s"
+  policies:
+    - database_name: "icinga"
+      duration: 90d
+      policy_name: quarterly_clean
+
+influxdb__http:
+  enabled: "true"
+  bind_adress: ":{{ influxdb__port }}"
+  auth_enabled: "true"
+  logs_enabled: "false"
+
+influxdb__features:
+  graphite:
+    enabled: "true"
+    database: "graphite"
+    bind-address: ":2003"
+    templates: '["service.instance.measurement*"]'

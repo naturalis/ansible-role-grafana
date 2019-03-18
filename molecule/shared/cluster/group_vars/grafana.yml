@@ -1,0 +1,45 @@
+---
+grafana__version: "5.4.2"
+
+grafana__security:
+  admin_user: admin
+  admin_password: admin
+
+grafana__bind: "0.0.0.0"
+grafana__port: 3000
+grafana__endpoint: "{{ ansible_default_ipv4.address }}"
+grafana__url: "http://{{ grafana__endpoint }}:{{ grafana__port }}"
+
+grafana__api_from_localhost: false
+grafana__api_url: "http://localhost:{{ grafana__port }}"
+
+grafana__datasources:
+  - name: "influxdb"
+    datasource_url: "http://{{ influxdb__private_ip }}:8086"
+    ds_type: "influxdb"
+    database: "icinga"
+    database_user: "icinga_user"
+    database_password: "icinga_db_password"
+    basicAuthUser: "icinga_user"
+    basicAuthPassword: "icinga__user_password"
+  - name: "influxdb_internal"
+    datasource_url: "http://{{ influxdb__private_ip }}:8086"
+    ds_type: "influxdb"
+    database: "_internal"
+    database_user: "root"
+    database_password: "root"
+    basicAuthUser: "root"
+    basicAuthPassword: "root"
+
+grafana__no_log: false
+grafana__dashboards:
+  - title: "default_dashboard"
+    file_name: default_dashboard
+    file_dir: templates/examples
+    uid: "J6D8s6Kiz"
+    ds: "influxdb"
+  - title: "influxdb_internal"
+    file_name: influxdb_internals
+    file_dir: templates/examples
+    uid: "y6D2s6uiz"
+    ds: "influxdb_internal"

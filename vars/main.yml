@@ -1,0 +1,106 @@
+---
+######################
+### grafana.ini.j2 ###
+######################
+
+#? grafana__welcome_email_on_sign_up:
+#?   type: bool
+#?   required: yes
+#?   description: sent email on sign up
+grafana__welcome_email_on_sign_up: false
+
+#? grafana__users:
+#?   type: dict
+#?   required: yes
+#?   description: user management and registration
+grafana__users:
+  allow_sign_up: false
+  # allow_org_create: true
+  # auto_assign_org: true
+  auto_assign_org_role: Viewer
+  # login_hint: "email or username"
+  default_theme: dark
+  # external_manage_link_url: ""
+  # external_manage_link_name: ""
+  # external_manage_info: ""
+
+#? grafana__session:
+#?   type: dict
+#?   required: yes
+#?   description: session management
+#?   meta: "http://docs.grafana.org/installation/configuration/#session"
+#?   example:
+#?     provider: file
+#?     provider_config: "sessions"
+grafana__session: {}
+
+#? grafana__analytics:
+#?   type: dict
+#?   required: yes
+#?   description: reporting, bidning to Google analytics and check_for_updates
+#?   example:
+#?     reporting_enabled: true
+#?     google_analytics_ua_id: ""
+grafana__analytics: {}
+
+#? grafana__smtp:
+#?   type: dict
+#?   required: yes
+#?   description: email notifications configuration
+#?   example:
+#?     host:
+#?     user:
+#?     password:
+#?     from_address:
+grafana__smtp: {}
+
+#? grafana__alerting:
+#?   type: bool
+#?   required: yes
+#?   description: enable grafana alerting mechanism
+grafana__alerting: true
+
+#? grafana__metrics:
+#?   type: dict
+#?   required: yes
+#?   description: Configuration of Internal grafana metrics system
+#?   example:
+#?     interval_seconds: 10
+#?     graphite:
+#?       address: "localhost:2003"
+#?       prefix: "prod.grafana.%(instance_name)s"
+grafana__metrics: {}
+
+#? grafana__tracing:
+#?   type: dict
+#?   required: yes
+#?   description: distributed tracing options
+#?   example:
+#?     address: "localhost:6831"
+#?     always_included_tag: "tag1:value1,tag2:value2"
+#?     sampler_type: const
+#?     sampler_param: 1
+grafana__tracing: {}
+
+#? grafana__snapshots:
+#?   type: dict
+#?   required: yes
+#?   description: configuration of snapshots
+#?   example:
+#?     external_enabled: true
+#?     external_snapshot_url: "https://snapshots-origin.raintank.io"
+#?     external_snapshot_name: "Publish to snapshot.raintank.io"
+#?     snapshot_remove_expired: true
+#?     snapshot_TTL_days: 90
+grafana__snapshots: {}
+
+#? grafana__image_storage:
+#?   type: dict
+#?   required: yes
+#?   description: configuration of external image storage
+#?   example:
+#?     provider: gcs
+#?     key_file:
+#?     bucket:
+#?     path:
+grafana__image_storage: {}

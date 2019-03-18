@@ -1,0 +1,4 @@
+---
+this__private_ip: "{{ (ansible_all_ipv4_addresses | difference(['10.0.2.15'])) | first }}"
+
+influxdb__private_ip: "{{ ((groups['influxdb'] | map('extract', hostvars, ['this__private_ip'])) | list | first) }}"

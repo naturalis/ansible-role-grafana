@@ -1,0 +1,183 @@
+---
+#? grafana__version:
+#?   type: string
+#?   required: yes
+#?   description: "version of grafana, numeric string e.g. '5.4.2' or 'latest', capable with grafana 5.x"
+grafana__version: "5.4.2"
+
+#? grafana__api_from_localhost:
+#?   type: bool
+#?   required: yes
+#?   description: use api calls from localhost or managed host
+#?   note: remember to set valid grafana__endpoint
+grafana__api_from_localhost: false
+
+#? grafana__api_url:
+#?   type: string
+#?   required: yes
+#?   description: API url of grafana for ansible modules
+#?   example: "http://grafana_host_ip:{{ grafana__port }}"
+grafana__api_url: "http://localhost:{{ grafana__port }}"
+
+#DEBUG for no_log
+#? grafana__no_log:
+#?   type: bool
+#?   required: yes
+#?   description: flag for no_log of dasboards and datasources
+grafana__no_log: true
+
+######################
+### grafana.ini.j2 ###
+######################
+
+#? grafana__instance:
+#?   type: string
+#?   required: yes
+#?   description: instance name
+grafana__instance: "{{ ansible_host | default(inventory_hostname) }}"
+
+#? grafana__logs_dir:
+#?   type: string
+#?   required: yes
+#?   description: path to logs
+grafana__logs_dir: "/var/log/grafana"
+
+#? grafana__data_dir:
+#?   type: string
+#?   required: yes
+#?   description: path to data dir
+grafana__data_dir: "/var/lib/grafana"
+
+#? grafana__dir_dashboards:
+#?   type: string
+#?   required: yes
+#?   description: path to dashboards
+grafana__dir_dashboards: "{{ grafana__data_dir }}/dashboards"
+
+#? grafana__endpoint:
+#?   type: string
+#?   required: yes
+#?   description: grafana name/IP used in grafana_url
+#?   info: watch `grafana__url` variable
+grafana__endpoint: !!null
+
+#? grafana__bind:
+#?   type: string
+#?   required: yes
+#?   description: FQDN adress for grafana http to listen
+#?   info: for remote access e.g. "0.0.0.0"
+grafana__bind: 0.0.0.0
+
+#? grafana__port:
+#?   type: int
+#?   required: yes
+#?   description: listening port
+grafana__port: 3000
+
+#? grafana__url:
+#?   type: string
+#?   required: yes
+#?   description: "external Grafana address - variable maps to 'root_url' in grafana server section"
+grafana__url: "http://{{ grafana__endpoint }}:{{ grafana__port }}"
+
+#? grafana__domain:
+#?   type: string
+#?   required: yes
+#?   description: domain for grafana server
+grafana__domain: "{{ ansible_host | default('localhost') }}"
+
+#? grafana__server:
+#?   type: dict
+#?   required: yes
+#?   description: configuration of grafana server
+#?   default: "look into defaults/yml"
+#?   info: "Additional options for grafana 'server' section
+#?     This section WILL omit options for: http_addr, http_port, domain, and root_url, as those settings are set by variables listed before"
+grafana__server:
+  protocol: http
+  enforce_domain: false
+  socket: ""
+  cert_key: ""
+  cert_file: ""
+  enable_gzip: false
+  static_root_path: public
+  router_logging: false
+
+#? grafana__security:
+#?   type: dict
+#?   required: yes
+#?   description:
+#?   default: look into default.yml
+#?   info: Variables correspond to the ones in grafana.ini configuration file
+grafana__security:
+  admin_user: admin
+  admin_password: admin
+#  secret_key: ""
+#  login_remember_days: 7
+#  cookie_username: grafana__user
+#  cookie_remember_name: grafana__remember
+#  disable_gravatar: true
+#  data_source_proxy_whitelist:
+
+#? grafana__database:
+#?   type: dict
+#?   required: yes
+#?   description: database setup of grafana users and dashboards
+grafana__database:
+  type: sqlite3
+#  host: 127.0.0.1:3306
+#  name: grafana
+#  user: root
+#  password: ""
+#  url: ""
+#  ssl_mode: disable
+#  path: grafana.db
+#  max_idle_conn: 2
+#  max_open_conn: ""
+#  log_queries: ""
+
+#? grafana__auth:
+#?   type: dict
+#?   required: yes
+#?   description: Authentication mechanisms specification
+grafana__auth:
+  basic: true
+#  disable_login_form: false
+#  disable_signout_menu: false
+#  anonymous:
+#    org_name: "Main Organization"
+#    org_role: Viewer
+#  ldap:
+#    config_file: "/etc/grafana/ldap.toml"
+#    allow_sign_up: false
+
+
+###DATA FOR GRAFANA
+#? grafana__dashboards:
+#?   type: string
+#?   required: yes
+#?   description: dashboards to import with meta
+#?   example:
+#?     - title: "default_dashboard"
+#?       file_dir: templates/examples
+#?       file_name: default_dashboard
+#?       uid: "J6D8s6Kiz"
+grafana__dashboards: []
+
+
+# Datasources to configure
+#? grafana__datasources:
+#?   type: list
+#?   required: yes
+#?   description: datasources to configure
+#?   example:
+#?     - name: "InfluxDB"
+#?       datasource_url: "http://localhost:8086"
+#?       ds_type: "influxdb"
+#?       is_default: true
+#?       database: "icinga2"
+#?       database_user: "icinga2"
+#?       database_password: "icinga2"
+#?       basicAuthUser: "admin"
+#?       basicAuthPassword: "password"
+grafana__datasources: []

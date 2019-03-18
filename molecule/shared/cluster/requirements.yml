@@ -1,0 +1,5 @@
+---
+- src: git+git@git.zdt.io:ansible/roles/zerodowntime.influxdb.git
+  name: zerodowntime.influxdb
+- src: git+git@git.zdt.io:ansible/roles/zerodowntime.influx_repo.git
+  name: zerodowntime.influx_repo

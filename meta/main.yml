@@ -1,0 +1,25 @@
+---
+dependencies: []
+
+galaxy_info:
+  role_name: grafana
+  description: Ansible role to setup grafana, includes datasources and dashboards managment.
+  author: ZeroDowntime <ansible@zerodowntime.pl>
+  company: ZeroDowntime Sp. z o.o.
+  license: Apache License 2.0
+
+  min_ansible_version: 2.7
+
+  platforms:
+    - name: EL
+      versions:
+        - 7
+    - name: Ubuntu
+      versions:
+        - xenial
+        - bionic
+
+  galaxy_tags:
+    - grafana
+    - grafana::install
+    - grafana::configure
