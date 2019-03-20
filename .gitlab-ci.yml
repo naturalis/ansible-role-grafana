@@ -20,3 +20,10 @@ libvirt.ansible-2.7:
   image: zerodowntime/gitlab_runner_executor_molecule:ansible-2.7.8
   script:
     - molecule test -s libvirt
+
+libvirt.cluster.ansible-2.7:
+  extends: .molecule.default
+  stage: libvirt.ansible-2.7
+  image: zerodowntime/gitlab_runner_executor_molecule:ansible-2.7.8
+  script:
+    - molecule test -s libvirt-cluster
