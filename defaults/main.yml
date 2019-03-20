@@ -140,6 +140,7 @@ grafana__database:
 #?   type: dict
 #?   required: yes
 #?   description: Authentication mechanisms specification
+#?   meta: to disable authentication : grafana__auth: {}
 grafana__auth:
   basic: true
 #  disable_login_form: false
