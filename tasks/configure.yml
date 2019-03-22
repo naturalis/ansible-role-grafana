@@ -52,7 +52,7 @@
 # https://github.com/ansible/ansible/issues/49147
 - name: import dashboards to grafana with setting its params
   vars:
-    __file: "{{ lookup('file', item.file_dir + '/' + item.file_name + '.json' ) | from_json }}"
+    __file: "{{ lookup('template', item.file_dir + '/' + item.file_name ) | from_json }}"
     # playing with toys
     # if panels exists then check if we have datasource to inject
     # if there is nothing to inject leave as it is
