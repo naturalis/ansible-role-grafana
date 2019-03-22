@@ -57,15 +57,11 @@
     # if panels exists then check if we have datasource to inject
     # if there is nothing to inject leave as it is
     # if panels do not exists then empty array
-    panels: "{{ (( __file
-             .dashboard.panels
-             | map('combine', ({'datasource':  item.ds }), recursive=True)
-             | list )
+    panels: "{{ (( __file.dashboard.panels
+             | map('combine', ({'datasource':  item.ds }), recursive=True)| list )
              if item.ds is defined
              else
-             ( __file
-             .dashboard.panels
-             | list ))
+             ( __file.dashboard.panels| list ))
              if __file.dashboard.panels is defined
              else []
              }}"
@@ -76,7 +72,7 @@
         panels: "{{ panels }}"
         id: null
       overwrite: true
-    dashboard: "{{ __file | combine(dashboard_patch, recursive=True)}}"
+    dashboard: "{{ _file | combine(dashboard_patch, recursive=True) }}"
   uri:
     url: "{{ grafana__api_url }}/api/dashboards/db"
     user: "{{ grafana__security.admin_user }}"
