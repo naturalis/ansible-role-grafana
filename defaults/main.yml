@@ -5,6 +5,12 @@
 #?   description: "version of grafana, numeric string e.g. '5.4.2' or 'latest', capable with grafana 5.x"
 grafana__version: "5.4.2"
 
+#? grafana__in_docker:
+#?   type: bool
+#?   required: yes
+#?   description: If grafana should be installed as docker container
+grafana__in_docker: false
+
 #? grafana__api_from_localhost:
 #?   type: bool
 #?   required: yes
@@ -182,3 +188,21 @@ grafana__dashboards: []
 #?       basicAuthUser: "admin"
 #?       basicAuthPassword: "password"
 grafana__datasources: []
+
+#? grafana__docker_config:
+#?   type: string
+#?   required: no
+#?   description: Path to the grafana config - image volumes
+grafana__docker_config: /etc/grafana/grafana.ini
+
+#? grafana__docker_data_dir:
+#?   type: string
+#?   required: no
+#?   description: Path to the grafana data dir - image volumes
+grafana__docker_data_dir: !!null
+
+#? grafana__docker_log_dir:
+#?   type: string
+#?   required: no
+#?   description: Path to the grafana log dir - image volumes
+grafana__docker_log_dir: !!null

@@ -1,23 +1,50 @@
 ---
-- name: Include install
-  import_tasks: install.yml
-  tags:
-    - grafana
-    - grafana::install
+- name: Stand alone Grafana
+  block:
+    - name: Include install
+      import_tasks: install.yml
+      tags:
+        - grafana
+        - grafana::install
 
-- name: Include Configure
-  import_tasks: configure.yml
-  tags:
-    - grafana
-    - grafana::configure
+    - name: Include Configure
+      import_tasks: configure.yml
+      tags:
+        - grafana
+        - grafana::configure
 
-- name: Make sure Grafana is enabled and running
-  service:
-    name: grafana-server
-    enabled: true
-    state: started
-  become: true
-  tags:
-    - grafana
-    - grafana::started
-    - grafana::enabled
+    - name: Make sure Grafana is enabled and running
+      service:
+        name: grafana-server
+        enabled: true
+        state: started
+      become: true
+      tags:
+        - grafana
+        - grafana::started
+        - grafana::enabled
+  when:
+    - not grafana__in_docker
+
+- name: Grafana in docker
+  block:
+    - name: Include install
+      import_tasks: install_docker.yml
+      tags:
+        - grafana
+        - grafana::install
+
+    - name: Include Configure
+      import_tasks: configure_docker.yml
+      tags:
+        - grafana
+        - grafana::configure
+
+    - name: Run a Grafana container
+      import_tasks: run_docker.yml
+      tags:
+        - grafana
+        - grafana::started
+        - grafana::enabled
+  when:
+    - grafana__in_docker

@@ -5,6 +5,7 @@ The latter ones are configured via API calls. API can be used remotely(e.g. loca
 To configure the origin of requests set `grafana__api_from_localhost` and `grafana__api_url` variables accordingly.
 
 Compatible with Grafana 5.x., 6.x haven't been tested, 4.x became depricated.
+Role works for both stand alone grafana and grafana in docker container
 
 ## Requirements
 
@@ -25,6 +26,7 @@ Compatible with Grafana 5.x., 6.x haven't been tested, 4.x became depricated.
 | Name | Description | Type | Default | Required |
 | -----| ----------- | :--: | :------:| :------: |
 | grafana__version | version of grafana, numeric string e.g. '5.4.2' or 'latest', capable with grafana 5.x | string | `5.4.2` | True |
+| grafana__in_docker | If grafana should be installed as docker container | bool | `False` | True |
 | grafana__api_from_localhost | use api calls from localhost or managed host | bool | `False` | True |
 | grafana__api_url | API url of grafana for ansible modules | string | `http://localhost:{{ grafana__port }}` | True |
 | grafana__no_log | flag for no_log of dasboards and datasources | bool | `True` | True |
@@ -43,6 +45,9 @@ Compatible with Grafana 5.x., 6.x haven't been tested, 4.x became depricated.
 | grafana__auth | Authentication mechanisms specification | dict | `{'basic': True}` | True |
 | grafana__dashboards | dashboards to import with meta | string | `[]` | True |
 | grafana__datasources | datasources to configure | list | `[]` | True |
+| grafana__docker_config | Path to the grafana config - image volumes | string | `/etc/grafana/grafana.ini` | False |
+| grafana__docker_data_dir | Path to the grafana data dir - image volumes | string | `None` | False |
+| grafana__docker_log_dir | Path to the grafana log dir - image volumes | string | `None` | False |
 
 **All default variables are described in [defaults/main.yml](defaults/main.yml) file.**
 
@@ -64,6 +69,8 @@ This section describes static variables implemented in the role.
 | grafana__tracing | distributed tracing options | dict | `{}` |
 | grafana__snapshots | configuration of snapshots | dict | `{}` |
 | grafana__image_storage | configuration of external image storage | dict | `{}` |
+| grafana__system_user | Grafana system username, used by docker configuration | string | `grafana` |
+| grafana__system_group | Grafana system group, used by docker configuration | string | `grafana` |
 
 **All static main variables are described in [vars/main.yml](vars/main.yml) file.**
 

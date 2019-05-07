@@ -104,3 +104,15 @@ grafana__snapshots: {}
 #?     bucket:
 #?     path:
 grafana__image_storage: {}
+
+#? grafana__system_user:
+#?   type: string
+#?   required: yes
+#?   description: Grafana system username, used by docker configuration
+grafana__system_user: grafana
+
+#? grafana__system_group:
+#?   type: string
+#?   required: yes
+#?   description: Grafana system group, used by docker configuration
+grafana__system_group: grafana

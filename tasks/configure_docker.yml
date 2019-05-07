@@ -1,29 +1,14 @@
 ---
-- block:
-    - name: Ensure grafana configuration directories exist
-      file:
-        path: "{{ item }}"
-        state: directory
-      loop:
-        - "/etc/grafana"
+- name: Insert Grafana config
+  template:
+    src: grafana.ini.j2
+    dest: /etc/grafana/grafana.ini
+    owner: "{{ grafana__system_user }}"
+    group: "{{ grafana__system_group }}"
+    mode: 0640
 
-    - name: Insert Grafana config
-      template:
-        src: grafana.ini.j2
-        dest: /etc/grafana/grafana.ini
-        owner: "{{ grafana__system_user }}"
-        group: "{{ grafana__system_group }}"
-        mode: 0640
-      notify: "grafana restart"
-
-- name: Flush handlers in case config was changed(e.g. ip bind)
-  meta: flush_handlers
-
-- name: Make sure Grafana is started to config it via api
-  service:
-    name: grafana-server
-    state: started
-  become: true
+- name: Make sure a Grafana container is running
+  import_tasks: run_docker.yml
 
 # https://github.com/ansible/ansible/issues/51068
 # always changes

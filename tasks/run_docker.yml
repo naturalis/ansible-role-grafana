@@ -1,0 +1,16 @@
+---
+- name: Run a Grafana container
+  vars:
+    this_data_volume: "{{ [grafana__docker_data_dir + ':/var/lib/grafana'] if grafana__docker_data_dir else [] }}"
+    this_config_volume: "{{ [grafana__docker_config + ':/etc/grafana/grafana.ini'] if grafana__docker_config else [] }}"
+    this_log_volume: "{{ [grafana__docker_log_dir + ':/var/log/grafana'] if grafana__docker_log_dir else [] }}"
+    this_volumes: "{{ this_data_volume + this_config_volume + this_log_volume }}"
+  docker_container:
+    name: grafana
+    image: "grafana/grafana:{{ grafana__version }}"
+    state: started
+    ports:
+      - "{{ grafana__port }}:{{ grafana__port }}"
+    volumes: "{{ this_volumes }}"
+    user: "{{ grafana__system_user }}"
+  become: true

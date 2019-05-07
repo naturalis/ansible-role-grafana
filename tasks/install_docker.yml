@@ -1,0 +1,47 @@
+---
+- name: Create grafana group
+  group:
+    name: "{{ grafana__system_group }}"
+    state: present
+
+- name: Create grafana user
+  user:
+    name: "{{ grafana__system_user }}"
+    state: present
+    shell: /sbin/nologin
+    uid: 472 # uid of grafana in container
+    group: "{{ grafana__system_group }}"
+
+- name: Create directories for data/config/log
+  vars:
+    this_data_dir: "{{ [grafana__docker_data_dir] if grafana__docker_data_dir else [] }}"
+    this_config_dir: "{{ [grafana__docker_config | dirname] if grafana__docker_config else [] }}"
+    this_log_dir: "{{ [grafana__docker_log_dir] if grafana__docker_log_dir else [] }}"
+    this_dirs:
+      - "{{ this_data_dir }}"
+      - "{{ this_config_dir }}"
+      - "{{ this_log_dir }}"
+  block:
+    - name: Create directories for data/config/log
+      file:
+        dest: "{{ item }}"
+        state: directory
+        recurse: true
+      loop: "{{ this_dirs }}"
+    - name: Assign directories data/log owners and permissions
+      file:
+        dest: "{{ item }}"
+        state: directory
+        owner: "{{ grafana__system_user }}"
+        group: "{{ grafana__system_group }}"
+        mode: 0771
+      loop:
+        - "{{ this_data_dir }}"
+        - "{{ this_log_dir }}"
+    - name: Assign directory config owners and permissions
+      file:
+        dest: "{{ this_config_dir }}"
+        state: directory
+        owner: "{{ grafana__system_user }}"
+        group: "{{ grafana__system_group }}"
+        mode: 0551
