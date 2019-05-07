@@ -1,6 +1,6 @@
 # History
 
-## 1.1.0 (April 05, 2019)
+## 1.1.0 (May 07, 2019)
 
 * added compatibility to use grafana in docker
 
