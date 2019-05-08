@@ -1,5 +1,9 @@
 # History
 
+## 1.1.2 (May 08, 2019)
+
+* fixed issue where instead of given dirs as string arrays were given
+  
 ## 1.1.1 (May 07, 2019)
 
 * divided tasks into more single responsibility files
