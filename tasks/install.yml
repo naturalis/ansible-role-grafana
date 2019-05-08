@@ -51,3 +51,10 @@
         state: "{{ this_state }}"
       become: true
   when: ansible_distribution | lower == "ubuntu"
+
+- name: Ensure grafana configuration directories exist
+  file:
+    path: "{{ item }}"
+    state: directory
+  loop:
+    - "/etc/grafana"

@@ -10,62 +10,8 @@
 - name: Make sure a Grafana container is running
   import_tasks: run_docker.yml
 
-# https://github.com/ansible/ansible/issues/51068
-# always changes
-- name: Create grafana datasources (api)
-  grafana_datasource:
-    name: "{{ item.name }}"
-    grafana_url: "{{ grafana__api_url }}"
-    url: "{{ item.datasource_url }}"
-    ds_type: "{{ item.ds_type }}"
-    database: "{{ item.database | default(omit) }}"
-    user: "{{ item.database_user | default(omit) }}"
-    password: "{{ item.database_password | default(omit) }}"
-    basic_auth_user: "{{ item.basicAuthUser | default(omit) }}"
-    basic_auth_password: "{{ item.basicAuthPassword | default(omit) }}"
-    grafana_user: "{{ grafana__security.admin_user }}"
-    grafana_password: "{{ grafana__security.admin_password }}"
-    is_default: "{{ item.is_default | default(false) }}"
-  loop: "{{ grafana__datasources }}"
-  no_log: "{{ grafana__no_log }}"
-  become: "{{ false if grafana__api_from_localhost else true }}"
-  delegate_to: "{{ 'localhost' if grafana__api_from_localhost else inventory_hostname  }}"
-  changed_when: false
+- name: Add datasources
+  import_tasks: datasources.yml
 
-# causes issues with python3
-# https://github.com/ansible/ansible/issues/49147
-- name: import dashboards to grafana with setting its params
-  vars:
-    __file: "{{ lookup('template', item.file_dir + '/' + item.file_name ) | from_json }}"
-    # playing with toys
-    # if panels exists then check if we have datasource to inject
-    # if there is nothing to inject leave as it is
-    # if panels do not exists then empty array
-    panels: "{{ (( __file.dashboard.panels
-             | map('combine', ({'datasource':  item.ds }), recursive=True)| list )
-             if item.ds is defined
-             else
-             ( __file.dashboard.panels| list ))
-             if __file.dashboard.panels is defined
-             else []
-             }}"
-    dashboard_patch:
-      dashboard:
-        title: "{{ item.title | default(item.file_name) }}"
-        uid: "{{ item.uid | default(null) }}"
-        panels: "{{ panels }}"
-        id: null
-      overwrite: "{{ item.overwrite | default(true) }}"
-    dashboard: "{{ __file | combine(dashboard_patch, recursive=True) }}"
-  uri:
-    url: "{{ grafana__api_url }}/api/dashboards/db"
-    user: "{{ grafana__security.admin_user }}"
-    password: "{{ grafana__security.admin_password }}"
-    force_basic_auth: true
-    method: POST
-    body_format: json
-    body: '{{ dashboard }}'
-  loop: "{{ grafana__dashboards }}"
-  no_log: "{{ grafana__no_log }}"
-  become: "{{ false if grafana__api_from_localhost else true }}"
-  delegate_to: "{{ 'localhost' if grafana__api_from_localhost else inventory_hostname  }}"
+- name: Add dashboards
+  import_tasks: dashboards.yml

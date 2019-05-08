@@ -1,5 +1,10 @@
 # History
 
+## 1.1.1 (May 07, 2019)
+
+* divided tasks into more single responsibility files
+* fixed issue where `templating` section in dashboards did not have datasource changed
+
 ## 1.1.0 (May 07, 2019)
 
 * added compatibility to use grafana in docker
