@@ -1,5 +1,11 @@
 # History
 
+## 1.1.3 (Oct 07, 2019)
+
+* fixed repository for centos
+* updated description in meta
+* updated tests image
+  
 ## 1.1.2 (May 08, 2019)
 
 * fixed issue where instead of given dirs as string arrays were given
