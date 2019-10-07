@@ -5,8 +5,8 @@
       yum_repository:
         name: grafana
         description: Grafana Repository
-        baseurl: https://packagecloud.io/grafana/stable/el/\$releasever/\$basearch
-        gpgkey: https://packagecloud.io/gpg.key https://grafanarel.s3.amazonaws.com/RPM-GPG-KEY-grafana
+        baseurl: https://packages.grafana.com/oss/rpm
+        gpgkey: https://packages.grafana.com/gpg.key
         gpgcheck: true
 
     - name: Centos | Install Grafana
