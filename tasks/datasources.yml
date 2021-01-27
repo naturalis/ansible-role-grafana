@@ -5,7 +5,7 @@
   grafana_datasource:
     name: "{{ item.name }}"
     grafana_url: "{{ grafana__api_url }}"
-    url: "{{ item.datasource_url }}"
+    ds_url: "{{ item.datasource_url }}"
     ds_type: "{{ item.ds_type }}"
     database: "{{ item.database | default(omit) }}"
     user: "{{ item.database_user | default(omit) }}"
